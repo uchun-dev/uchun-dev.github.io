@@ -12,14 +12,14 @@
   --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Section Accent Colors (Dynamic & Vibrant) */
-  --color-sec-a: #10b981; /* Emerald */
-  --color-sec-b: #06b6d4; /* Cyan */
-  --color-sec-c: #f59e0b; /* Amber */
-  --color-sec-d: #6366f1; /* Indigo */
-  --color-sec-e: #8b5cf6; /* Violet */
-  --color-sec-f: #ec4899; /* Rose */
-  --color-sec-g: #14b8a6; /* Teal */
-  --color-sec-h: #0ea5e9; /* Sky Blue */
+  --color-sec-a: rgb(168, 224, 120);
+  --color-sec-b: rgb(159, 184, 220);
+  --color-sec-c: rgb(247, 195, 154);
+  --color-sec-d: rgb(160, 184, 240);
+  --color-sec-e: rgb(196, 235, 161);
+  --color-sec-f: rgb(247, 224, 153);
+  --color-sec-g: rgb(223, 223, 223);
+  --color-sec-h: rgb(164, 201, 245);
   --color-sec-special: #f43f5e; /* Coral */
   --color-star: #eab308; /* Star Gold */
 
@@ -289,15 +289,15 @@ svg.exhibition-map {
   fill-opacity: 0;
 }
 
-.booth-rect[data-section="A"] { fill: rgba(16, 185, 129, 0.12); stroke: var(--color-sec-a); }
-.booth-rect[data-section="B"] { fill: rgba(6, 182, 212, 0.12); stroke: var(--color-sec-b); }
-.booth-rect[data-section="C"] { fill: rgba(245, 158, 11, 0.12); stroke: var(--color-sec-c); }
-.booth-rect[data-section="D"] { fill: rgba(99, 102, 241, 0.12); stroke: var(--color-sec-d); }
-.booth-rect[data-section="E"] { fill: rgba(139, 92, 246, 0.12); stroke: var(--color-sec-e); }
-.booth-rect[data-section="F"] { fill: rgba(236, 72, 153, 0.12); stroke: var(--color-sec-f); }
-.booth-rect[data-section="G"] { fill: rgba(20, 184, 166, 0.12); stroke: var(--color-sec-g); }
-.booth-rect[data-section="H"] { fill: rgba(14, 165, 233, 0.12); stroke: var(--color-sec-h); }
-.booth-rect[data-section="SPECIAL"] { fill: rgba(244, 63, 94, 0.15); stroke: var(--color-sec-special); }
+.booth-rect[data-section="A"] { fill: var(--color-sec-a); stroke: var(--color-sec-a); }
+.booth-rect[data-section="B"] { fill: var(--color-sec-b); stroke: var(--color-sec-b); }
+.booth-rect[data-section="C"] { fill: var(--color-sec-c); stroke: var(--color-sec-c); }
+.booth-rect[data-section="D"] { fill: var(--color-sec-d); stroke: var(--color-sec-d); }
+.booth-rect[data-section="E"] { fill: var(--color-sec-e); stroke: var(--color-sec-e); }
+.booth-rect[data-section="F"] { fill: var(--color-sec-f); stroke: var(--color-sec-f); }
+.booth-rect[data-section="G"] { fill: var(--color-sec-g); stroke: var(--color-sec-g); }
+.booth-rect[data-section="H"] { fill: var(--color-sec-h); stroke: var(--color-sec-h); }
+.booth-rect[data-section="SPECIAL"] { fill: var(--color-sec-special); stroke: var(--color-sec-special); }
 
 /* Unassigned Empty Booth styling */
 .booth-rect.unassigned {
@@ -382,11 +382,11 @@ svg.exhibition-map {
 .booth-label-name.special {
   font-size: 8px;
   font-weight: 700;
-  fill: var(--color-sec-special);
+  fill: #94a3b8;
 }
 
 [data-theme="light"] .booth-label-name.special {
-  fill: var(--color-sec-special);
+  fill: #475569;
 }
 
 /* Hover state */
@@ -414,18 +414,10 @@ svg.exhibition-map {
 
 /* Starred Booth map highlight */
 .booth-rect.starred {
-  fill-opacity: 0.2;
+  fill-opacity: 0.4;
 }
 
-.booth-rect[data-section="A"].starred { fill: var(--color-sec-a); }
-.booth-rect[data-section="B"].starred { fill: var(--color-sec-b); }
-.booth-rect[data-section="C"].starred { fill: var(--color-sec-c); }
-.booth-rect[data-section="D"].starred { fill: var(--color-sec-d); }
-.booth-rect[data-section="E"].starred { fill: var(--color-sec-e); }
-.booth-rect[data-section="F"].starred { fill: var(--color-sec-f); }
-.booth-rect[data-section="G"].starred { fill: var(--color-sec-g); }
-.booth-rect[data-section="H"].starred { fill: var(--color-sec-h); }
-.booth-rect[data-section="SPECIAL"].starred { fill: var(--color-sec-special); }
+
 
 .booth-rect.starred ~ .booth-label {
   fill: var(--text-contrast) !important;
@@ -447,7 +439,7 @@ svg.exhibition-map {
 }
 
 .booth-rect.visited.starred {
-  fill-opacity: 0.1;
+  fill-opacity: 0.2;
 }
 
 /* Booth labels text */

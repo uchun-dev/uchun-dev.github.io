@@ -243,7 +243,8 @@ function renderSVGMap() {
     rect.setAttribute('height', booth.height);
     
     const isUnassigned = booth.name === '미배정 부스';
-    rect.setAttribute('class', `booth-rect ${isUnassigned ? 'unassigned' : ''} ${isFacility ? 'facility' : ''} ${selectedId === booth.id ? 'active' : ''} ${isStarred ? 'starred' : ''} ${isVisited ? 'visited' : ''}`);
+    const isFacilityClass = isFacility || booth.id === '무대';
+    rect.setAttribute('class', `booth-rect ${isUnassigned ? 'unassigned' : ''} ${isFacilityClass ? 'facility' : ''} ${selectedId === booth.id ? 'active' : ''} ${isStarred ? 'starred' : ''} ${isVisited ? 'visited' : ''}`);
     
     // Set Section for color mapping
     const isSpecialZone = booth.id === '무대' || booth.id === '휴게' || booth.id === '체험' || isFacility;
@@ -256,7 +257,7 @@ function renderSVGMap() {
     rect.appendChild(title);
     
     // Text Label Background for special stages/cafes (to make it readable)
-    if (isSpecialZone && !isFacility) {
+    if (isSpecialZone && !isFacility && booth.id !== '무대') {
       const textBg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
       textBg.setAttribute('x', booth.x + 4);
       textBg.setAttribute('y', booth.y + booth.height/2 - 10);
@@ -266,63 +267,8 @@ function renderSVGMap() {
       g.appendChild(textBg);
     }
     
-    // Text Label
-    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    text.setAttribute('class', `booth-label ${isUnassigned ? 'unassigned' : ''} ${isFacility ? 'facility' : ''}`);
-    
-    const idSpan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-    idSpan.setAttribute('x', booth.x + booth.width / 2);
-    idSpan.textContent = isFacility ? booth.name : booth.id;
-    text.appendChild(idSpan);
-
-    if (isFacility) {
-      text.setAttribute('y', booth.y + booth.height / 2);
-    } else if (!isUnassigned && booth.id !== '무대') {
-      idSpan.setAttribute('dy', '-2');
-      
-      const nameSpan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-      nameSpan.setAttribute('x', booth.x + booth.width / 2);
-      nameSpan.setAttribute('dy', '10');
-      nameSpan.setAttribute('class', 'booth-label-name');
-      
-      // Clean and truncate name (removing slash details and parenthesized sub-names)
-      const maxLen = booth.width >= 50 ? 8 : (booth.width >= 40 ? 6 : 4);
-      let displayName = booth.name.split('/')[0].trim();
-      if (displayName.includes('(')) {
-        const parts = displayName.split('(');
-        if (parts[0].trim().length > 0) {
-          displayName = parts[0].trim();
-        } else {
-          // Remove leading parenthesized blocks like (주), (사)
-          displayName = displayName.replace(/^\([^)]+\)/, '').trim();
-        }
-      }
-      if (displayName.length > maxLen) {
-        displayName = displayName.substring(0, maxLen);
-      }
-      nameSpan.textContent = displayName;
-      text.appendChild(nameSpan);
-      
-      text.setAttribute('y', booth.y + booth.height / 2 - 3);
-    } else {
-      text.setAttribute('y', booth.y + booth.height / 2);
-      
-      if (booth.id === '무대') {
-        idSpan.setAttribute('dy', '-6');
-        
-        const nameSpan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-        nameSpan.setAttribute('x', booth.x + booth.width / 2);
-        nameSpan.setAttribute('dy', '14');
-        nameSpan.setAttribute('class', 'booth-label-name special');
-        nameSpan.textContent = "메인 무대";
-        text.appendChild(nameSpan);
-        
-        text.setAttribute('y', booth.y + booth.height / 2 - 4);
-      }
-    }
-    
     // Add event listeners on rect click/double-click/double-tap
-    if (!isFacility) {
+    if (!isFacility && booth.id !== '무대') {
       let lastClickTime = 0;
       rect.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -345,7 +291,53 @@ function renderSVGMap() {
     }
     
     g.appendChild(rect);
-    g.appendChild(text);
+
+    // Text Label (Skip for "무대")
+    if (booth.id !== '무대') {
+      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      text.setAttribute('class', `booth-label ${isUnassigned ? 'unassigned' : ''} ${isFacility ? 'facility' : ''}`);
+      
+      const idSpan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+      idSpan.setAttribute('x', booth.x + booth.width / 2);
+      idSpan.textContent = isFacility ? booth.name : booth.id;
+      text.appendChild(idSpan);
+
+      if (isFacility) {
+        text.setAttribute('y', booth.y + booth.height / 2);
+      } else if (!isUnassigned) {
+        idSpan.setAttribute('dy', '-2');
+        
+        const nameSpan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+        nameSpan.setAttribute('x', booth.x + booth.width / 2);
+        nameSpan.setAttribute('dy', '10');
+        nameSpan.setAttribute('class', 'booth-label-name');
+        
+        // Clean and truncate name (removing slash details and parenthesized sub-names)
+        const maxLen = booth.width >= 50 ? 8 : (booth.width >= 40 ? 6 : 4);
+        let displayName = booth.name.split('/')[0].trim();
+        if (displayName.includes('(')) {
+          const parts = displayName.split('(');
+          if (parts[0].trim().length > 0) {
+            displayName = parts[0].trim();
+          } else {
+            // Remove leading parenthesized blocks like (주), (사)
+            displayName = displayName.replace(/^\([^)]+\)/, '').trim();
+          }
+        }
+        if (displayName.length > maxLen) {
+          displayName = displayName.substring(0, maxLen);
+        }
+        nameSpan.textContent = displayName;
+        text.appendChild(nameSpan);
+        
+        text.setAttribute('y', booth.y + booth.height / 2 - 3);
+      } else {
+        text.setAttribute('y', booth.y + booth.height / 2);
+      }
+      
+      g.appendChild(text);
+    }
+    
     svg.appendChild(g);
   });
   
@@ -504,7 +496,7 @@ function renderExhibitorsList() {
   const filtered = exhibitors.filter(b => {
     // Exclude facility IDs from list entirely
     const isFacility = b.id.startsWith("입구") || b.id.startsWith("출구") || b.id === "등록대";
-    if (isFacility) return false;
+    if (isFacility || b.id === '무대') return false;
 
     // Exclude unassigned empty booths from the list by default
     // to avoid cluttering, but keep them if they are searched, starred, visited, or have notes
