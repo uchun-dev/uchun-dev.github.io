@@ -287,7 +287,16 @@ function renderSVGMap() {
       
       // Clean and truncate name (removing slash details and parenthesized sub-names)
       const maxLen = booth.width >= 50 ? 8 : (booth.width >= 40 ? 6 : 4);
-      let displayName = booth.name.split('/')[0].split('(')[0].trim();
+      let displayName = booth.name.split('/')[0].trim();
+      if (displayName.includes('(')) {
+        const parts = displayName.split('(');
+        if (parts[0].trim().length > 0) {
+          displayName = parts[0].trim();
+        } else {
+          // Remove leading parenthesized blocks like (주), (사)
+          displayName = displayName.replace(/^\([^)]+\)/, '').trim();
+        }
+      }
       if (displayName.length > maxLen) {
         displayName = displayName.substring(0, maxLen);
       }

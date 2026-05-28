@@ -40,6 +40,8 @@
   --btn-secondary-hover: rgba(82, 82, 91, 0.8);
   --map-grid-color: rgba(63, 63, 70, 0.15);
   --scrollbar-thumb: rgba(161, 161, 170, 0.3);
+  --color-tab-active: #818cf8;
+  --btn-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
 }
 
 [data-theme="light"] {
@@ -60,6 +62,7 @@
   --btn-secondary-hover: rgba(212, 212, 216, 0.9);
   --map-grid-color: rgba(228, 228, 231, 0.6);
   --scrollbar-thumb: rgba(113, 113, 122, 0.3);
+  --color-tab-active: #4f46e5;
 }
 
 * {
@@ -155,7 +158,7 @@ header h1 span {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  background: var(--btn-primary);
   color: var(--text-contrast);
   border: none;
 }
@@ -283,6 +286,7 @@ svg.exhibition-map {
   ry: 4px;
   stroke-width: 1.5;
   transition: filter var(--transition-fast), stroke-width var(--transition-fast), stroke var(--transition-fast);
+  fill-opacity: 0;
 }
 
 .booth-rect[data-section="A"] { fill: rgba(16, 185, 129, 0.12); stroke: var(--color-sec-a); }
@@ -298,6 +302,7 @@ svg.exhibition-map {
 /* Unassigned Empty Booth styling */
 .booth-rect.unassigned {
   fill: rgba(161, 161, 170, 0.05) !important;
+  fill-opacity: 1 !important;
   stroke: rgba(161, 161, 170, 0.25) !important;
   stroke-width: 1;
   stroke-dasharray: 3, 3;
@@ -334,6 +339,7 @@ svg.exhibition-map {
 /* Facility Styling (Entrances, Exits, Registration) */
 .booth-rect.facility {
   fill: rgba(30, 41, 59, 0.4) !important;
+  fill-opacity: 1 !important;
   stroke: #475569 !important;
   stroke-width: 1.5;
   stroke-dasharray: 2, 2;
@@ -349,6 +355,7 @@ svg.exhibition-map {
 
 [data-theme="light"] .booth-rect.facility {
   fill: rgba(241, 245, 249, 0.6) !important;
+  fill-opacity: 1 !important;
   stroke: #94a3b8 !important;
 }
 
@@ -407,13 +414,40 @@ svg.exhibition-map {
 
 /* Starred Booth map highlight */
 .booth-rect.starred {
-  fill-opacity: 0.35;
+  fill-opacity: 0.2;
 }
+
+.booth-rect[data-section="A"].starred { fill: var(--color-sec-a); }
+.booth-rect[data-section="B"].starred { fill: var(--color-sec-b); }
+.booth-rect[data-section="C"].starred { fill: var(--color-sec-c); }
+.booth-rect[data-section="D"].starred { fill: var(--color-sec-d); }
+.booth-rect[data-section="E"].starred { fill: var(--color-sec-e); }
+.booth-rect[data-section="F"].starred { fill: var(--color-sec-f); }
+.booth-rect[data-section="G"].starred { fill: var(--color-sec-g); }
+.booth-rect[data-section="H"].starred { fill: var(--color-sec-h); }
+.booth-rect[data-section="SPECIAL"].starred { fill: var(--color-sec-special); }
+
+.booth-rect.starred ~ .booth-label {
+  fill: var(--text-contrast) !important;
+}
+
+.booth-rect.starred ~ .booth-label .booth-label-name {
+  fill: var(--text-contrast) !important;
+  opacity: 0.85;
+}
+
 
 /* Visited Booth Map dimming */
 .booth-rect.visited {
-  fill-opacity: 0.05;
   stroke-dasharray: 4, 3;
+}
+
+.booth-rect.visited:not(.starred) {
+  fill-opacity: 0;
+}
+
+.booth-rect.visited.starred {
+  fill-opacity: 0.1;
 }
 
 /* Booth labels text */
@@ -518,7 +552,7 @@ svg.exhibition-map {
 .tabs-container {
   display: flex;
   border-bottom: 1px solid var(--border-color);
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: transparent;
 }
 
 .tab-btn {
@@ -540,7 +574,7 @@ svg.exhibition-map {
 }
 
 .tab-btn.active {
-  color: #818cf8;
+  color: var(--color-tab-active);
 }
 
 .tab-btn.active::after {
@@ -1291,3 +1325,4 @@ dialog::backdrop {
   border-color: #6366f1 !important;
   z-index: 10;
 }
+
