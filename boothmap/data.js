@@ -254,8 +254,6 @@ const EXHIBITORS_DATA = [
   { id: "E26", name: "효향요", gridX: 17, gridY: 21, gridW: 1, gridH: 1 },
   { id: "A8", name: "휘계차", gridX: 0, gridY: 15, gridW: 1, gridH: 1 },
   { id: "H15", name: "휴다인", gridX: 29, gridY: 15, gridW: 1, gridH: 1 },
-  { id: "G28", name: "미배정 부스", gridX: 25, gridY: 24, gridW: 1, gridH: 1 },
-  { id: "D28", name: "미배정 부스", gridX: 15, gridY: 21, gridW: 1, gridH: 1 },
   { id: "등록대", name: "등록대", gridX: 17, gridY: 0, gridW: 1, gridH: 1 },
   { id: "무대", name: "메인 무대 (차 시연 및 공연)", gridX: 1, gridY: 18, gridW: 4, gridH: 2 },
   { id: "입구_1", name: "입구", gridX: 8, gridY: 0, gridW: 1, gridH: 1 },
