@@ -30,13 +30,18 @@ const toast = document.getElementById('toast');
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
   loadPlannerData();
+  const imported = checkAndImportSharedData();
   initTheme();
   // Set default view for mobile
   document.body.classList.add('show-map-view');
   renderSVGMap();
   renderExhibitorsList();
   setupEventListeners();
-  showToast('코엑스 부스 배치도가 로드되었습니다.');
+  if (imported) {
+    showToast('기기 데이터 연동 완료! (즐겨찾기, 방문 상태 및 메모가 병합되었습니다.)');
+  } else {
+    showToast('코엑스 부스 배치도가 로드되었습니다.');
+  }
   setTimeout(fitMapToViewport, 100);
 });
 
@@ -892,6 +897,12 @@ function setupEventListeners() {
   if (mobileImportBtn) mobileImportBtn.addEventListener('click', triggerImport);
   
   if (importFile) importFile.addEventListener('change', importData);
+
+  // Link Sync (Desktop & Mobile)
+  const linkSyncBtn = document.getElementById('link-sync-btn');
+  if (linkSyncBtn) linkSyncBtn.addEventListener('click', copySyncLink);
+  const mobileLinkSyncBtn = document.getElementById('mobile-link-sync-btn');
+  if (mobileLinkSyncBtn) mobileLinkSyncBtn.addEventListener('click', copySyncLink);
 }
 
 // Update single booth styling on SVG map
@@ -1009,4 +1020,106 @@ function escapeHTML(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
+}
+
+// Copy Sync Link to Clipboard
+function copySyncLink() {
+  const minData = {
+    f: Array.from(plannerData.favorites),
+    v: Array.from(plannerData.visited),
+    m: plannerData.memos
+  };
+  
+  try {
+    const jsonStr = JSON.stringify(minData);
+    const utf8Str = encodeURIComponent(jsonStr);
+    const base64Data = btoa(utf8Str);
+    
+    const shareUrl = window.location.origin + window.location.pathname + '?data=' + base64Data;
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(shareUrl)
+        .then(() => {
+          showToast('연동 링크가 클립보드에 복사되었습니다! 다른 기기나 브라우저에서 열어보세요.');
+        })
+        .catch(err => {
+          console.error('클립보드 복사 실패:', err);
+          fallbackCopyText(shareUrl);
+        });
+    } else {
+      fallbackCopyText(shareUrl);
+    }
+  } catch (e) {
+    console.error('연동 링크 생성 오류:', e);
+    showToast('연동 링크 생성에 실패했습니다.');
+  }
+}
+
+// Fallback copy using textarea
+function fallbackCopyText(text) {
+  const textArea = document.createElement('textarea');
+  textArea.value = text;
+  textArea.style.position = 'fixed';
+  textArea.style.opacity = '0';
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  
+  try {
+    const successful = document.execCommand('copy');
+    if (successful) {
+      showToast('연동 링크가 복사되었습니다!');
+    } else {
+      showToast('링크 복사에 실패했습니다. 직접 복사해 주세요.');
+      prompt('연동 링크 복사:', text);
+    }
+  } catch (err) {
+    console.error('Fallback 복사 실패:', err);
+    showToast('링크 복사에 실패했습니다.');
+  }
+  
+  document.body.removeChild(textArea);
+}
+
+// Check URL and Import Shared Data
+function checkAndImportSharedData() {
+  const params = new URLSearchParams(window.location.search);
+  const base64Data = params.get('data');
+  if (!base64Data) return false;
+  
+  try {
+    const utf8Str = atob(base64Data);
+    const jsonStr = decodeURIComponent(utf8Str);
+    const parsed = JSON.parse(jsonStr);
+    
+    // Merge favorites
+    if (parsed.f && Array.isArray(parsed.f)) {
+      parsed.f.forEach(id => plannerData.favorites.add(id));
+    }
+    
+    // Merge visited
+    if (parsed.v && Array.isArray(parsed.v)) {
+      parsed.v.forEach(id => plannerData.visited.add(id));
+    }
+    
+    // Merge memos
+    if (parsed.m && typeof parsed.m === 'object') {
+      Object.entries(parsed.m).forEach(([id, text]) => {
+        if (text && text.trim() !== '') {
+          plannerData.memos[id] = text;
+        }
+      });
+    }
+    
+    savePlannerData();
+    
+    // Clean query parameter without page reload
+    window.history.replaceState({}, document.title, window.location.pathname);
+    return true;
+  } catch (e) {
+    console.error('연동 데이터를 가져오는 중 오류 발생:', e);
+    window.history.replaceState({}, document.title, window.location.pathname);
+    showToast('연동 데이터 형식이 맞지 않거나 손상되었습니다.');
+    return false;
+  }
 }
