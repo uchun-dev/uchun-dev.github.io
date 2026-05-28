@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>제23회 국제차문화대전 부스배치도</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header>
+    <h1>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-sec-a)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1 9.8a7 7 0 0 1-9 8.2zm0 0v-5z"></path>
+      </svg>
+      <span>TeaWorld 2026</span>
+    </h1>
+    <div class="header-controls">
+      <button class="btn" id="export-btn" title="나의 플래너 데이터 백업">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+        </svg>
+        백업 (Export)
+      </button>
+      <button class="btn" id="import-btn" title="백업한 데이터 불러오기">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+        </svg>
+        복구 (Import)
+      </button>
+      <input type="file" id="import-file" accept=".json" style="display: none;">
+      
+      <button class="btn theme-toggle-btn" id="theme-btn" title="화면 테마 변경">
+        <svg id="theme-sun-icon" style="display: none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg id="theme-moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Workspace Grid -->
+  <div class="app-container">
+    
+    <!-- Left Layout: Map Viewer -->
+    <div class="map-panel">
+      <div class="map-toolbar">
+        <div class="map-title-bar">
+          <h2 class="map-title">COEX Hall D 부스 배치도</h2>
+          <span class="map-subtitle">2026.06.04 ~ 06.07 • 실시간 맵</span>
+        </div>
+        <div class="map-controls">
+          <button class="btn" id="zoom-in" title="확대">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <button class="btn" id="zoom-out" title="축소">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <button class="btn" id="zoom-reset" title="배율 초기화">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+            </svg>
+            100%
+          </button>
+        </div>
+      </div>
+
+      <div class="map-viewport" id="map-viewport">
+        <!-- SVG will be dynamically injected here by app.js -->
+      </div>
+
+        <!-- Color Map Legend -->
+        <div class="map-legend">
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: rgba(16, 185, 129, 0.15); border-color: var(--color-sec-a);"></div>
+            <span>A구역</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: rgba(6, 182, 212, 0.15); border-color: var(--color-sec-b);"></div>
+            <span>B구역</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: rgba(245, 158, 11, 0.15); border-color: var(--color-sec-c);"></div>
+            <span>C구역</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: rgba(99, 102, 241, 0.15); border-color: var(--color-sec-d);"></div>
+            <span>D구역</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: rgba(139, 92, 246, 0.15); border-color: var(--color-sec-e);"></div>
+            <span>E구역</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: rgba(236, 72, 153, 0.15); border-color: var(--color-sec-f);"></div>
+            <span>F구역</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: rgba(20, 184, 166, 0.15); border-color: var(--color-sec-g);"></div>
+            <span>G구역</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: rgba(14, 165, 233, 0.15); border-color: var(--color-sec-h);"></div>
+            <span>H구역</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: rgba(244, 63, 94, 0.15); border-color: var(--color-sec-special);"></div>
+            <span>무대</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: rgba(161, 161, 170, 0.05); border: 1.5px dashed rgba(161, 161, 170, 0.5);"></div>
+            <span>미배정 (공실)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: #3f3f46; border-color: #18181b;"></div>
+            <span>기둥 (Pillar)</span>
+          </div>
+        </div>
+    </div>
+
+    <!-- Right Layout: Sidebar Planner -->
+    <div class="sidebar-panel">
+      
+      <!-- Search & Filters -->
+      <div class="sidebar-header">
+        <div class="search-box">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" class="search-input" id="search-input" placeholder="부스 번호, 상호명 검색...">
+        </div>
+      </div>
+
+      <!-- Tab Selectors -->
+      <div class="tabs-container">
+        <button class="tab-btn active" id="tab-all" data-tab="all">전체 부스</button>
+        <button class="tab-btn" id="tab-starred" data-tab="starred">즐겨찾기 (★)</button>
+        <button class="tab-btn" id="tab-visited" data-tab="visited">방문 완료 (✓)</button>
+      </div>
+
+
+
+      <!-- Detailed Info Drawer (collapsible / contextual) -->
+      <div class="detail-card-container" id="detail-panel">
+        <div class="detail-header">
+          <span class="detail-booth-badge" id="detail-booth-id">A01</span>
+          <div class="detail-controls">
+            <button class="btn" id="detail-star-btn" title="즐겨찾기">★ 즐겨찾기</button>
+            <button class="btn" id="detail-visit-btn" title="방문 상태 변경">✓ 방문 완료</button>
+            <button class="btn close-detail-btn" id="close-detail-btn" title="상세 정보 닫기">✕</button>
+          </div>
+        </div>
+        <h3 class="detail-name" id="detail-title">하동군 지리산 녹차 홍보관</h3>
+        <div class="detail-grid-info" id="detail-grid-info" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.35rem;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/>
+          </svg>
+          <span id="detail-grid-coords">그리드 좌표: (0, 0) | 크기: 1x1</span>
+        </div>
+        
+        <!-- Planner Memo -->
+        <div class="detail-memo-box">
+          <div class="detail-memo-header">
+            <span>방문 메모 (Visitor Notes)</span>
+            <button class="btn" id="detail-edit-memo" style="padding: 0.15rem 0.4rem; font-size: 0.7rem;">작성/수정</button>
+          </div>
+          <div id="detail-memo-content">
+            <!-- Memo or empty state -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Scrollable Directory Cards -->
+      <div class="exhibitors-list" id="exhibitors-list">
+        <!-- Injected cards -->
+      </div>
+    </div> <!-- Close sidebar-panel -->
+
+    <!-- Mobile Settings Panel -->
+    <div class="settings-panel" id="settings-panel">
+      <div class="settings-header">
+        <h2>설정</h2>
+      </div>
+      <div class="settings-content">
+        <div class="settings-card">
+          <div class="settings-card-title">화면 테마</div>
+          <div class="settings-card-desc">애플리케이션의 색상 테마를 전환합니다.</div>
+          <button class="btn btn-settings" id="mobile-theme-btn">
+            <svg id="mobile-theme-sun-icon" style="display: none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+            <svg id="mobile-theme-moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <span id="mobile-theme-text">테마 변경</span>
+          </button>
+        </div>
+        
+        <div class="settings-card">
+          <div class="settings-card-title">나의 데이터 관리</div>
+          <div class="settings-card-desc">저장된 즐겨찾기, 방문 상태 및 메모를 백업하거나 복구합니다.</div>
+          <div class="settings-actions-row">
+            <button class="btn btn-settings" id="mobile-export-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+              </svg>
+              데이터 백업
+            </button>
+            <button class="btn btn-settings" id="mobile-import-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+              </svg>
+              데이터 복구
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> <!-- Close app-container -->
+
+
+  <div class="mobile-nav-bar" id="mobile-nav-bar">
+    <button class="nav-tab active" id="nav-map-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
+      </svg>
+      <span>배치도</span>
+    </button>
+    <button class="nav-tab" id="nav-list-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+      </svg>
+      <span>목록</span>
+    </button>
+    <button class="nav-tab" id="nav-settings-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      <span>설정</span>
+    </button>
+  </div>
+
+  <!-- Memo Dialog Dialog -->
+  <dialog id="memo-dialog">
+    <div class="dialog-header" id="memo-dialog-title">방문 메모 작성</div>
+    <div class="dialog-desc">이 부스에서 시음해볼 차나 구매 예정 목록을 작성하세요. 브라우저 로컬 저장소에 안전하게 임시 저장됩니다.</div>
+    <div class="form-group">
+      <label class="form-label" for="memo-text">메모 내용</label>
+      <textarea class="form-textarea" id="memo-text" placeholder="예: 시음 필수, 우전 등급 녹차 50g 구매(예산 3만원), 대기줄 길 수 있으니 개장 즉시 방문하기"></textarea>
+    </div>
+    <div class="dialog-footer">
+      <button class="btn" id="memo-cancel">취소</button>
+      <button class="btn btn-primary" id="memo-save">저장하기</button>
+    </div>
+  </dialog>
+
+  <!-- Alert System Toast -->
+  <div id="toast" class="toast">메모가 성공적으로 저장되었습니다.</div>
+
+  <!-- Script Modules -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
